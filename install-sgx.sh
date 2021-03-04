@@ -161,19 +161,25 @@ else
     echo "DONE."
 fi
 
+RET=0
+systemctl status aesmd > /dev/null 2>&1 || RET=1
 banner "Installing linux-sgx psw"
-grep "sgx_debian_local_repo" /etc/apt/sources.list || cat << _EOT_ >> /etc/apt/sources.list
+if [ 1 = $RET ]; then
+    grep "sgx_debian_local_repo" /etc/apt/sources.list || cat << _EOT_ >> /etc/apt/sources.list
 
 # SGX
 deb [trusted=yes arch=amd64] file:$PATH_SGX_REPO $CODENAME main
 _EOT_
-apt update
-apt install -y \
-    libsgx-dcap-ql \
-    libsgx-epid \
-    libsgx-launch \
-    libsgx-quote-ex \
-    libsgx-urts
+    apt update
+    apt install -y \
+        libsgx-dcap-ql \
+        libsgx-epid \
+        libsgx-launch \
+        libsgx-quote-ex \
+        libsgx-urts
+else
+    echo "DONE."
+fi
 
 banner "Checking aesmd service"
 systemctl status aesmd
