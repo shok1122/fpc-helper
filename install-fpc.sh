@@ -42,6 +42,7 @@ if [ 1 = $RET ]; then
     echo 'export PATH=/usr/local/go/bin:$PATH' >> ./cache/profile-fpc.sh
     echo 'export GOROOT=/usr/local/go' >> ./cache/profile-fpc.sh
     echo 'export GOPATH=/opt/go' >> ./cache/profile-fpc.sh
+    . ./cache/profile-fpc.sh
 else
     echo "DONE."
 fi
@@ -106,6 +107,7 @@ if [ ! -f /usr/local/proto3/bin/protoc ]; then
     echo '' >> ./cache/profile-fpc.sh
     echo '# proto3' >> ./cache/profile-fpc.sh
     echo 'export PROTOC_CMD=/usr/local/proto3/bin/protoc' >> ./cache/profile-fpc.sh
+    . ./cache/profile-fpc.sh
     wget -O /tmp/protoc-linux-x86_64.zip https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
     unzip /tmp/protoc-linux-x86_64.zip -d /usr/local/proto3
 else
