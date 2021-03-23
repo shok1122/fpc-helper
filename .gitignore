@@ -2,5 +2,6 @@ cache/*
 
 linux-sgx-driver
 linux-sgx
+intel-sgx-ssl
 
 !.gitkeep
