@@ -4,10 +4,13 @@ set -e
 
 BRANCH_LINUX_SGX_DRIVER="${1:-sgx_driver_2.11}"
 BRANCH_LINUX_SGX="${2:-sgx_2.11}"
+BRANCH_LINUX_SGX_SSL="${3:-lin_2.13_1.1.1i}"
 
 CODENAME="$(lsb_release -c | cut -f 2)"
 
 PATH_SGX_DRIVER="/lib/modules/$(uname -r)/kernel/drivers/intel/sgx"
+
+OPENSSL_VERSION="1.1.1i"
 
 banner()
 {
@@ -31,7 +34,7 @@ if [ -n "$(dmesg | grep -i "secureboot" | grep enabled)" ]; then
 fi
 
 banner "Installing linux headers"
-apt install linux-headers-$(uname -r)
+apt install -y linux-headers-$(uname -r)
 
 banner "Installing packages"
 apt install -y \
@@ -146,14 +149,14 @@ fi
 
 PATH_SGX_SDK_INSTALLER=$(ls $PWD/linux-sgx/linux/installer/bin/sgx_linux_*.bin)
 banner "Installing linux-sgx sdk"
-if [ ! -d /opt/intel ] || [ -z "$(ls /opt/intel)" ]; then
+if [ ! -d /opt/intel/sgxsdk ] || [ -z "$(ls /opt/intel)" ]; then
     (
         mkdir -p /opt/intel
         cd /opt/intel
         bash $PATH_SGX_SDK_INSTALLER
-        echo '# sgxsdk' > ./cache/profile-sgx.sh
-        'source /opt/intel/sgxsdk/environment' >> ./cache/profile-sgx.sh
     )
+    echo '# sgxsdk' > ./cache/profile-sgx.sh
+    '. /opt/intel/sgxsdk/environment' >> ./cache/profile-sgx.sh
     . ./cache/profile-sgx.sh
 else
     echo "DONE."
@@ -194,4 +197,24 @@ fi
 
 banner "Checking aesmd service"
 systemctl status aesmd
+
+banner "Cloning linux-sgx ssl ($BRANCH_LINUX_SGX_SSL)"
+if [ ! -d intel-sgx-ssl ]; then
+    git clone https://github.com/intel/intel-sgx-ssl.git -b $BRANCH_LINUX_SGX_SSL --depth 1
+else
+    echo "DONE."
+fi
+
+banner "Compiling linux-sgx ssl ($BRANCH_LINUX_SGX_SSL)"
+if [ ! -d /opt/intel/sgxssl ]; then
+    wget -P intel-sgx-ssl/openssl_source https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+    (
+        cd intel-sgx-ssl/Linux
+        SGX_MODE=HW DESTDIR=/opt/intel/sgxssl make all test
+        make install
+    )
+else
+    echo "DONE."
+fi
+
 
