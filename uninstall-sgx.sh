@@ -23,14 +23,14 @@ systemctl disable aesmd
 banner "Removing an isgx module"
 /sbin/modprobe --remove isgx
 rm -rf $PATH_SGX_DRIVER
-sed '/^isgx$/d' /etc/modules
+sed -i '/^isgx$/d' /etc/modules
 
 banner "Removing a linux-sgx-driver repository"
 rm -rf linux-sgx-driver
 
 banner "Removing a sgx sdk"
 rm -rf /opt/intel
-sed '/^source /opt/intel/sgxsdk/environment$/d' ~/.bashrc
+sed -i '/^source \/opt\/intel\/sgxsdk\/environment$/d' ~/.bashrc
 
 banner "Removing a linux-sgx repository"
 rm -rf linux-sgx
