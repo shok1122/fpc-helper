@@ -29,9 +29,8 @@ sed -i '/^isgx$/d' /etc/modules
 banner "Removing a linux-sgx-driver repository"
 rm -rf linux-sgx-driver
 
-banner "Removing a sgx sdk"
+banner "Removing a sgx sdk and a sgx ssl"
 rm -rf /opt/intel
-sed -i '/^source \/opt\/intel\/sgxsdk\/environment$/d' ~/.bashrc
 
 banner "Removing a linux-sgx repository"
 rm -rf linux-sgx
@@ -51,3 +50,7 @@ rm -f /usr/local/bin/as
 rm -f /usr/local/bin/ld
 rm -f /usr/local/bin/ld.gold
 rm -f /usr/local/bin/objdump
+
+banner "Deleting profile-sgx"
+rm -f ./cache/profile-sgx.sh
+
