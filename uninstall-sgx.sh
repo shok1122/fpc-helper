@@ -37,6 +37,10 @@ rm -rf linux-sgx
 rm -f /lib/systemd/system/aesmd.service
 sed -i '/sgx_debian_local_repo/d' /etc/apt/sources.list
 
+banner "Uninstalling linux-sgx psw"
+apt remove -y \
+    libsgx-*
+
 banner "Removing a distro file"
 rm -f cache/distro
 
