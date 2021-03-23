@@ -22,9 +22,9 @@ systemctl disable aesmd
 
 banner "Removing an isgx module"
 /sbin/modprobe --remove isgx
-/sbin/depmod
 rm -rf $PATH_SGX_DRIVER
 sed -i '/^isgx$/d' /etc/modules
+/sbin/depmod
 
 banner "Removing a linux-sgx-driver repository"
 rm -rf linux-sgx-driver
