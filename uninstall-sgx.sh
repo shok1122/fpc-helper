@@ -22,6 +22,7 @@ systemctl disable aesmd
 
 banner "Removing an isgx module"
 /sbin/modprobe --remove isgx
+/sbin/depmod
 rm -rf $PATH_SGX_DRIVER
 sed -i '/^isgx$/d' /etc/modules
 
@@ -38,8 +39,9 @@ rm -f /lib/systemd/system/aesmd.service
 sed -i '/sgx_debian_local_repo/d' /etc/apt/sources.list
 
 banner "Uninstalling linux-sgx psw"
-apt remove -y \
+apt remove --purge -y \
     libsgx-*
+apt autoremove
 
 banner "Removing a distro file"
 rm -f cache/distro
