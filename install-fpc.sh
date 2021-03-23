@@ -30,7 +30,9 @@ apt install -y \
     ca-certificates \
     gpupg \
     curl \
-    lsb-release
+    lsb-release \
+    jq \
+    basez
 
 RET=0
 which go > /dev/null || RET=1
