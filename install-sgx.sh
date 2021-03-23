@@ -156,7 +156,7 @@ if [ ! -d /opt/intel/sgxsdk ] || [ -z "$(ls /opt/intel)" ]; then
         bash $PATH_SGX_SDK_INSTALLER
     )
     echo '# sgxsdk' > ./cache/profile-sgx.sh
-    '. /opt/intel/sgxsdk/environment' >> ./cache/profile-sgx.sh
+    echo '. /opt/intel/sgxsdk/environment' >> ./cache/profile-sgx.sh
     . ./cache/profile-sgx.sh
 else
     echo "DONE."
