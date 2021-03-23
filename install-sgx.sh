@@ -105,6 +105,7 @@ if [ ! -f cache/distro ]; then
         cp external/toolset/$DISTRO/ld.gold /usr/local/bin/
         cp external/toolset/$DISTRO/objdump /usr/local/bin/
     )
+    DISTRO="$(cat cache/distro)"
 else
     DISTRO="$(cat cache/distro)"
     banner "Overwriting toolset (distro:$DISTRO)"
