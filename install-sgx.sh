@@ -21,6 +21,10 @@ if [ "root" != "$USER" ]; then
     exit 0
 fi
 
+if [ -f ./cache/profile-sgx.sh ]; then
+    . ./cache/profile-sgx.sh
+fi
+
 if [ -n "$(dmesg | grep -i "secureboot" | grep enabled)" ]; then
     echo "Secure Boot is enable. Turn off the Secure Boot option in the BIOS."
     exit 0
@@ -147,9 +151,10 @@ if [ ! -d /opt/intel ] || [ -z "$(ls /opt/intel)" ]; then
         mkdir -p /opt/intel
         cd /opt/intel
         bash $PATH_SGX_SDK_INSTALLER
-        grep -Fxq 'source /opt/intel/sgxsdk/environment' ~/.bashrc || echo 'source /opt/intel/sgxsdk/environment' >> ~/.bashrc
+        echo '# sgxsdk' > ./cache/profile-sgx.sh
+        'source /opt/intel/sgxsdk/environment' >> ./cache/profile-sgx.sh
     )
-    . /opt/intel/sgxsdk/environment
+    . ./cache/profile-sgx.sh
 else
     echo "DONE."
 fi
