@@ -41,7 +41,7 @@ sed -i '/sgx_debian_local_repo/d' /etc/apt/sources.list
 banner "Uninstalling linux-sgx psw"
 apt remove --purge -y \
     libsgx-*
-apt autoremove
+apt autoremove -y
 
 banner "Removing a distro file"
 rm -f cache/distro
