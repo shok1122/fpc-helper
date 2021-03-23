@@ -21,6 +21,11 @@ if [ "root" != "$USER" ]; then
     exit 0
 fi
 
+if [ -n "$(dmesg | grep -i "secureboot" | grep enabled)" ]; then
+    echo "Secure Boot is enable. Turn off the Secure Boot option in the BIOS."
+    exit 0
+fi
+
 banner "Installing linux headers"
 apt install linux-headers-$(uname -r)
 
