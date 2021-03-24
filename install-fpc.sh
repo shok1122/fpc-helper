@@ -138,7 +138,7 @@ fi
 # setup SPID
 banner 'Setup SGX Attestation Service'
 PATH_API_KEY=$FABRIC_PRIVATE_CHAINCODE_PATH/config/ias/api_key.txt
-if [ ! -f "$PATH_API_KEY" ];
+if [ ! -f "$PATH_API_KEY" ]; then
     echo -n "API_KEY: "
     read API_KEY
     echo "$API_KEY" > $PATH_API_KEY
@@ -148,7 +148,7 @@ echo -n "> "
 cat  $PATH_API_KEY
 
 PATH_SPID=$FABRIC_PRIVATE_CHAINCODE_PATH/config/ias/spid.txt
-if [ ! -f "$PATH_SPID" ];
+if [ ! -f "$PATH_SPID" ]; then
     echo -n "SPID: "
     read SPID
     echo "$SPID" > $PATH_SPID
@@ -158,7 +158,7 @@ echo -n "> "
 cat  $PATH_SPID
 
 PATH_SPID_TYPE=$FABRIC_PRIVATE_CHAINCODE_PATH/config/ias/spid_type.txt
-if [ ! -f "$PATH_SPID_TYPE" ];
+if [ ! -f "$PATH_SPID_TYPE" ]; then
     echo "epid-unlinkable" > $WORKSPACE/fabric-private-chaincode/config/ias/spid_type.txt
 fi
 echo $PATH_SPID_TYPE
@@ -166,6 +166,7 @@ echo -n "> "
 cat  $PATH_SPID_TYPE
 
 banner "Compiling fabric-private-chaincode ($FABRIC_PRIVATE_CHAINCODE_VERSION)"
+cp config.override.mk $FABRIC_PRIVATE_CHAINCODE_PATH
 (
     cd $FABRIC_PRIVATE_CHAINCODE_PATH
     make
